@@ -11,7 +11,7 @@ TARGET_LINUX = build/linux_x64/engine
 SOURCES = $(wildcard src/*.cpp)
 HEADERS = $(wildcard src/include/*.hpp)
 
-all: linux_x64
+all: linux_x64 windows_x64
 linux_x64: $(TARGET_LINUX)
 windows_x64: $(TARGET_WINDOWS)
 
