@@ -1,8 +1,10 @@
 #!/bin/bash
 
+# URLs required for adding LunarG repository
 GPG_KEY_URL="https://packages.lunarg.com/lunarg-signing-key-pub.asc"
 REPO_URL="https://packages.lunarg.com/vulkan/1.3.296/lunarg-vulkan-1.3.296-noble.list"
 
+# Packages required for binary compilation
 PACKAGES=(
 	"build-essential"
 	"mingw-w64"
@@ -16,14 +18,18 @@ PACKAGES=(
 	"wget"
 )
 
+# MinGW libraries path
 MINGW_W64_LIB_PATH="/usr/x86_64-w64-mingw32/lib"
 
+# URL required for downloading GLFW windows binaries
 GLFW_VERSION="3.4"
 GLFW_URL="https://github.com/glfw/glfw/releases/download/${GLFW_VERSION}/glfw-${GLFW_VERSION}.bin.WIN64.zip"
 
+# URL required for downloading Vulkan windows library
 VULKAN_LIB_URL="https://raw.githubusercontent.com/SaschaWillems/Vulkan/master/libs/vulkan/vulkan-1.lib"
 
-add_LunarG_repo() {
+# Adding the LunarG repository
+add_LunarG_repository() {
 	echo "Adding the LunarG signing key..."
 	wget -qO /tmp/lunarg-signing-key.asc "$GPG_KEY_URL"
 
@@ -34,6 +40,13 @@ add_LunarG_repo() {
 	sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-1.3.296-noble.list "$REPO_URL"
 }
 
+# Updating package list
+update_package_list() {
+	echo "Updating the package list..."
+	sudo apt update
+}
+
+# Instaling required packages
 installl_packages() {
 	echo "Installing Vulkan SDK and additional libraries..."
 	for package in "${PACKAGES[@]}"; do
@@ -41,12 +54,8 @@ installl_packages() {
 	done
 }
 
-update_package_list() {
-	echo "Updating the package list..."
-	sudo apt update
-}
-
-install_glfw() {
+# Installing GLFW windows binaries
+install_glfw_windows_binaries() {
 	echo "Downloading GLFW..."
 	wget -q "$GLFW_URL" -O /tmp/glfw.bin.WIN64.zip
 
@@ -60,7 +69,8 @@ install_glfw() {
 	rm -rf /tmp/glfw.zip /tmp/glfw-${GLFW_VERSION}
 }
 
-install_vulkan() {
+# Installing Vulkan windows binaries
+install_vulkan_windows_binaries() {
 	echo "Downloading Vulkan library..."
 	wget -q "$VULKAN_LIB_URL" -O /tmp/vulkan-1.lib
 
@@ -71,10 +81,11 @@ install_vulkan() {
 	rm /tmp/vulkan-1.lib
 }
 
-add_LunarG_repo
+# Executing functions
+add_LunarG_repository
 update_package_list
 installl_packages
-install_glfw
-install_vulkan
+install_glfw_windows_binaries
+install_vulkan_windows_binaries
 
 echo "Installation completed successfully!"

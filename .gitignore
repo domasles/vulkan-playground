@@ -34,5 +34,6 @@
 # Workspace settings
 .vscode
 
-# Build -related directories
+# Build-related directories
 build
+src/shaders/compiled

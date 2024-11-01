@@ -1,6 +1,7 @@
 #pragma once
 
 #include "window.hpp"
+#include "pipeline.hpp"
 
 namespace engine {
 	class App {
@@ -12,5 +13,6 @@ namespace engine {
 
 		private:
 			Window window{WIDTH, HEIGHT, "Hello World!"};
+			Pipeline pipeline{"shaders/default.vert.spv", "shaders/default.frag.spv"}; // Paths relative to the executable
 	};
 }
