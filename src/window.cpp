@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "include/window.hpp"
 
 namespace engine {
@@ -16,5 +18,11 @@ namespace engine {
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
 		window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+	}
+
+	void Window::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface) {
+		if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
+			throw std::runtime_error("Failed to create a window surface!");
+		}
 	}
 }

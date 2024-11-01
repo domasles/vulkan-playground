@@ -2,7 +2,7 @@
 
 namespace engine {
 	void App::run() {
-		while(!window.shouldClose()) {
+		while (!window.shouldClose()) {
 			glfwPollEvents();
 		}
 	}
