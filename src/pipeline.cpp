@@ -17,21 +17,8 @@ namespace engine {
 		vkDestroyPipeline(device.device(), vulkanPipeline, nullptr);
 	}
 
-	std::vector<char> Pipeline::readFile(const std::string &path) {
-		std::ifstream file{path, std::ios::ate | std::ios::binary};
-
-		if (!file.is_open()) {
-			throw std::runtime_error("Failed to open file: " + path);
-		}
-
-		size_t fileSize = static_cast<size_t>(file.tellg());
-		std::vector<char> buffer(fileSize);
-
-		file.seekg(0);
-		file.read(buffer.data(), fileSize);
-		file.close();
-
-		return buffer;
+	void Pipeline::bind(VkCommandBuffer commandBuffer) {
+		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vulkanPipeline);
 	}
 
 	PipelineConfigInfo Pipeline::defaultPipelineConfigInfo(uint32_t width, uint32_t height) {
@@ -102,6 +89,23 @@ namespace engine {
 		pipelineConfigInfo.depthStencilStateInfo.back = {};
 
 		return pipelineConfigInfo;
+	}
+
+	std::vector<char> Pipeline::readFile(const std::string &path) {
+		std::ifstream file{path, std::ios::ate | std::ios::binary};
+
+		if (!file.is_open()) {
+			throw std::runtime_error("Failed to open file: " + path);
+		}
+
+		size_t fileSize = static_cast<size_t>(file.tellg());
+		std::vector<char> buffer(fileSize);
+
+		file.seekg(0);
+		file.read(buffer.data(), fileSize);
+		file.close();
+
+		return buffer;
 	}
 
 	void Pipeline::createVulkanPipeline(const std::string &vertexShader, const std::string &fragmentShader, const PipelineConfigInfo &pipelineConfigInfo) {
