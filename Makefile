@@ -33,30 +33,25 @@ VERT_SHADERS = $(wildcard $(SHADERS_DIR)/*.vert)
 FRAG_SHADERS = $(wildcard $(SHADERS_DIR)/*.frag)
 
 # Compilation targets
-all: windows_x64 linux_x64 copy_shaders_windows copy_shaders_linux
-windows_x64: $(WINDOWS_TARGET)
-linux_x64: $(LINUX_TARGET)
-compile_shaders: $(patsubst $(SHADERS_DIR)/%.vert,$(SHADERS_BUILD_DIR)/%.vert.spv,$(VERT_SHADERS)) $(patsubst $(SHADERS_DIR)/%.frag,$(SHADERS_BUILD_DIR)/%.frag.spv,$(FRAG_SHADERS))
+all: recompile_shaders windows_x64 linux_x64
 
-# Compilation of the Windows target
+# Windows target with shader compilation
+windows_x64: $(WINDOWS_TARGET)
+
 $(WINDOWS_TARGET): $(SOURCES) $(HEADERS)
 	@mkdir -p $(WINDOWS_BUILD_DIR)
 	$(WINDOWS_COMPILER) $(CFLAGS) -o $@ $(SOURCES) $(WINDOWS_LDFLAGS)
 
-# Compilation of the Linux target
+# Linux target with shader compilation
+linux_x64: $(LINUX_TARGET)
+
 $(LINUX_TARGET): $(SOURCES) $(HEADERS)
 	@mkdir -p $(LINUX_BUILD_DIR)
 	$(LINUX_COMPILER) $(CFLAGS) -o $@ $(SOURCES) $(LINUX_LDFLAGS)
 
-# Compilation of vertex shaders
-$(SHADERS_BUILD_DIR)/%.vert.spv: $(SHADERS_DIR)/%.vert
-	@mkdir -p $(SHADERS_BUILD_DIR)
-	$(SHADERS_COMPILER) $< -o $@
-
-# Compilation of fragment shaders
-$(SHADERS_BUILD_DIR)/%.frag.spv: $(SHADERS_DIR)/%.frag
-	@mkdir -p $(SHADERS_BUILD_DIR)
-	$(SHADERS_COMPILER) $< -o $@
+# Shader compilation
+compile_shaders: $(patsubst $(SHADERS_DIR)/%.vert,$(SHADERS_BUILD_DIR)/%.vert.spv,$(VERT_SHADERS)) $(patsubst $(SHADERS_DIR)/%.frag,$(SHADERS_BUILD_DIR)/%.frag.spv,$(FRAG_SHADERS))
+recompile_shaders: compile_shaders copy_shaders_windows copy_shaders_linux
 
 # Copying compiled shaders to the Windows build directory
 copy_shaders_windows: compile_shaders
@@ -68,7 +63,17 @@ copy_shaders_linux: compile_shaders
 	@mkdir -p $(LINUX_SHADERS_BUILD_DIR)
 	@cp $(SHADERS_BUILD_DIR)/*.spv $(LINUX_SHADERS_BUILD_DIR)/
 
-.PHONY: all windows_x64 linux_x64 compile_shaders copy_shaders_windows copy_shaders_linux clean
+# Compilation of vertex shaders
+$(SHADERS_BUILD_DIR)/%.vert.spv: $(SHADERS_DIR)/%.vert
+	@mkdir -p $(SHADERS_BUILD_DIR)
+	$(SHADERS_COMPILER) $< -o $@
+
+# Compilation of fragment shaders
+$(SHADERS_BUILD_DIR)/%.frag.spv: $(SHADERS_DIR)/%.frag
+	@mkdir -p $(SHADERS_BUILD_DIR)
+	$(SHADERS_COMPILER) $< -o $@
+
+.PHONY: all windows_x64 linux_x64 recompile_shaders clean
 
 # Cleanup
 clean:
