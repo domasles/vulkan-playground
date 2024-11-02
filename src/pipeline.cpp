@@ -51,12 +51,6 @@ namespace engine {
 		pipelineConfigInfo.scissor.offset = {0, 0};
 		pipelineConfigInfo.scissor.extent = {width, height};
 
-		pipelineConfigInfo.viewportStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-		pipelineConfigInfo.viewportStateInfo.viewportCount = 1;
-		pipelineConfigInfo.viewportStateInfo.pViewports = &pipelineConfigInfo.viewport;
-		pipelineConfigInfo.viewportStateInfo.scissorCount = 1;
-		pipelineConfigInfo.viewportStateInfo.pScissors = &pipelineConfigInfo.scissor;
-
 		pipelineConfigInfo.rasterizationStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
 		pipelineConfigInfo.rasterizationStateInfo.depthClampEnable = VK_FALSE;
 		pipelineConfigInfo.rasterizationStateInfo.rasterizerDiscardEnable = VK_FALSE;
@@ -146,6 +140,14 @@ namespace engine {
 		vertexInputStateInfo.pVertexAttributeDescriptions = nullptr;
 		vertexInputStateInfo.pVertexBindingDescriptions = nullptr;
 
+		VkPipelineViewportStateCreateInfo viewportStateInfo{};
+
+		viewportStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+		viewportStateInfo.viewportCount = 1;
+		viewportStateInfo.pViewports = &pipelineConfigInfo.viewport;
+		viewportStateInfo.scissorCount = 1;
+		viewportStateInfo.pScissors = &pipelineConfigInfo.scissor;
+
 		VkGraphicsPipelineCreateInfo pipelineInfo{};
 
 		pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -153,7 +155,7 @@ namespace engine {
 		pipelineInfo.pStages = shaderStageInfo;
 		pipelineInfo.pVertexInputState = &vertexInputStateInfo;
 		pipelineInfo.pInputAssemblyState = &pipelineConfigInfo.inputAssemblyStateInfo;
-		pipelineInfo.pViewportState = &pipelineConfigInfo.viewportStateInfo;
+		pipelineInfo.pViewportState = &viewportStateInfo;
 		pipelineInfo.pRasterizationState = &pipelineConfigInfo.rasterizationStateInfo;
 		pipelineInfo.pMultisampleState = &pipelineConfigInfo.multisampleStateInfo;
 		pipelineInfo.pColorBlendState = &pipelineConfigInfo.colorBlendStateInfo;

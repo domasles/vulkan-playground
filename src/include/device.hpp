@@ -46,8 +46,11 @@ namespace engine {
 			VkQueue presentQueue() { return presentQueue_; }
 
 			SwapChainSupportDetails getSwapChainSupport() { return querySwapChainSupport(physicalDevice); }
+
 			uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+
 			QueueFamilyIndices findPhysicalQueueFamilies() { return findQueueFamilies(physicalDevice); }
+
 			VkFormat findSupportedFormat(const std::vector<VkFormat> &candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
 
 			void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer &buffer, VkDeviceMemory &bufferMemory);
@@ -86,7 +89,9 @@ namespace engine {
 			VkInstance instance;
 			VkDebugUtilsMessengerEXT debugMessenger;
 			VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+
 			Window &window;
+			
 			VkCommandPool commandPool;
 
 			VkDevice device_;

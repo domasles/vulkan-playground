@@ -9,15 +9,17 @@ namespace engine {
 	struct PipelineConfigInfo {
 		VkViewport viewport;
 		VkRect2D scissor;
-		VkPipelineViewportStateCreateInfo viewportStateInfo;
+
 		VkPipelineInputAssemblyStateCreateInfo inputAssemblyStateInfo;
 		VkPipelineRasterizationStateCreateInfo rasterizationStateInfo;
 		VkPipelineMultisampleStateCreateInfo multisampleStateInfo;
 		VkPipelineColorBlendAttachmentState colorBlendAttachmentState;
 		VkPipelineColorBlendStateCreateInfo colorBlendStateInfo;
 		VkPipelineDepthStencilStateCreateInfo depthStencilStateInfo;
+
 		VkPipelineLayout pipelineLayout = nullptr;
 		VkRenderPass renderPass = nullptr;
+
 		uint32_t subpass = 0;
 	};
 
