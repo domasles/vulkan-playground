@@ -26,9 +26,9 @@ namespace engine {
 
 	void App::loadModels() {
 		std::vector<Model::Vertex> vertices {
-			{{0.0f, -0.5f}},
-			{{0.5f, 0.5f}},
-			{{-0.5f, 0.5f}}
+			{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+			{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+			{{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
 		};
 
 		model = std::make_unique<Model>(device, vertices);
@@ -91,7 +91,7 @@ namespace engine {
 
 			std::array<VkClearValue, 2> clearValues{};
 
-			clearValues[0].color = {0.2f, 0.2f, 0.2f, 1.0f};
+			clearValues[0].color = {0.1f, 0.1f, 0.1f, 1.0f};
 			clearValues[1].depthStencil = {1.0f, 0};
 
 			renderPassBeginInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
