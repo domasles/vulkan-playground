@@ -33,17 +33,17 @@ VERT_SHADERS = $(wildcard $(SHADERS_DIR)/*.vert)
 FRAG_SHADERS = $(wildcard $(SHADERS_DIR)/*.frag)
 
 # Compilation targets
-all: recompile_shaders windows_x64 linux_x64
+all: compile_shaders windows_x64 linux_x64
 
 # Windows target with shader compilation
-windows_x64: $(WINDOWS_TARGET)
+windows_x64: copy_shaders_windows $(WINDOWS_TARGET)
 
 $(WINDOWS_TARGET): $(SOURCES) $(HEADERS)
 	@mkdir -p $(WINDOWS_BUILD_DIR)
 	$(WINDOWS_COMPILER) $(CFLAGS) -o $@ $(SOURCES) $(WINDOWS_LDFLAGS)
 
 # Linux target with shader compilation
-linux_x64: $(LINUX_TARGET)
+linux_x64: copy_shaders_linux $(LINUX_TARGET)
 
 $(LINUX_TARGET): $(SOURCES) $(HEADERS)
 	@mkdir -p $(LINUX_BUILD_DIR)
@@ -73,8 +73,11 @@ $(SHADERS_BUILD_DIR)/%.frag.spv: $(SHADERS_DIR)/%.frag
 	@mkdir -p $(SHADERS_BUILD_DIR)
 	$(SHADERS_COMPILER) $< -o $@
 
-.PHONY: all windows_x64 linux_x64 recompile_shaders clean
+.PHONY: all windows_x64 linux_x64 recompile_shaders clean clean_shaders
 
 # Cleanup
 clean:
 	rm -rf $(BUILD_DIR)
+
+clean_shaders:
+	rm -rf $(SHADERS_BUILD_DIR) $(WINDOWS_SHADERS_BUILD_DIR) $(LINUX_SHADERS_BUILD_DIR)
