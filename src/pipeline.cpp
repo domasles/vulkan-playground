@@ -4,6 +4,7 @@
 #include <cassert>
 
 #include "include/pipeline.hpp"
+#include "include/model.hpp"
 
 namespace engine {
 	Pipeline::Pipeline(Device &device, const std::string &vertexShader, const std::string &fragmentShader, const PipelineConfigInfo &pipelineConfigInfo) : device{device} {
@@ -136,13 +137,16 @@ namespace engine {
 		shaderStageInfo[1].pNext = nullptr;
 		shaderStageInfo[1].pSpecializationInfo = nullptr;
 
+		auto inputAttributeDescriptions = Model::Vertex::getInputAttributeDescriptions();
+		auto inputBindingDescriptions = Model::Vertex::getInputBindingDescriptions();
+
 		VkPipelineVertexInputStateCreateInfo vertexInputStateInfo{};
 
 		vertexInputStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-		vertexInputStateInfo.vertexAttributeDescriptionCount = 0;
-		vertexInputStateInfo.vertexBindingDescriptionCount = 0;
-		vertexInputStateInfo.pVertexAttributeDescriptions = nullptr;
-		vertexInputStateInfo.pVertexBindingDescriptions = nullptr;
+		vertexInputStateInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(inputAttributeDescriptions.size());
+		vertexInputStateInfo.vertexBindingDescriptionCount = static_cast<uint32_t>(inputBindingDescriptions.size());
+		vertexInputStateInfo.pVertexAttributeDescriptions = inputAttributeDescriptions.data();
+		vertexInputStateInfo.pVertexBindingDescriptions = inputBindingDescriptions.data();
 
 		VkPipelineViewportStateCreateInfo viewportStateInfo{};
 

@@ -10,13 +10,13 @@ namespace engine {
 
 class SwapChain {
 	public:
-		static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
-
 		SwapChain(Device &deviceRef, VkExtent2D windowExtent);
 		~SwapChain();
 
 		SwapChain(const SwapChain &) = delete;
 		void operator=(const SwapChain &) = delete;
+
+		static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
 
 		VkFramebuffer getFrameBuffer(int index) { return swapChainFramebuffers[index]; }
 		VkRenderPass getRenderPass() { return renderPass; }

@@ -7,6 +7,7 @@
 #include "pipeline.hpp"
 #include "device.hpp"
 #include "swap_chain.hpp"
+#include "model.hpp"
 
 namespace engine {
 	class App {
@@ -23,6 +24,7 @@ namespace engine {
 			void run();
 
 		private:
+			void loadModels();
 			void createPipelineLayout();
 			void createPipeline();
 			void createCommandBuffers();
@@ -33,6 +35,7 @@ namespace engine {
 			SwapChain swapChain{device, window.getExtent2D()};
 
 			std::unique_ptr<Pipeline> pipeline;
+			std::unique_ptr<Model> model;
 
 			VkPipelineLayout pipelineLayout;
 
